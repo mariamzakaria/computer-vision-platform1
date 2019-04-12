@@ -241,19 +241,16 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
-<<<<<<< HEAD
  #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
 #
-=======
     
 #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
         
 #FT
->>>>>>> 495a129f093b37536d44486320ed2d1b196f7e10
     if dig.comboBox.currentIndex() == 10:  
         dig.valueChannel = extractValueChannel(dig.image)
         dig.FT = fftpack.fft2(dig.valueChannel)
