@@ -192,11 +192,9 @@ def setFilters(text):
         plotinput(noisy)
         dog(noisy)
 
-#sharpen FILTER
-    if dig.comboBox.currentIndex() == 6:
-        sharpen(dig.image)
+
 #BOX FILTER        
-    if dig.comboBox.currentIndex() == 7:
+    if dig.comboBox.currentIndex() == 6:
         #figureSize = (12,10)
         noisy=salt_n_pepper(dig.image)
         plotinput(salt_n_pepper(dig.image))
@@ -208,7 +206,7 @@ def setFilters(text):
        # plt.set_cmap("gray")
     
 #GAUSSIAN FILTER 
-    if dig.comboBox.currentIndex() == 8:
+    if dig.comboBox.currentIndex() == 7:
        #dig.label_3.setText(text)
         #figureSize = (12,10)
        
@@ -220,8 +218,9 @@ def setFilters(text):
         #plt.figure("2",figsize=figureSize)
         #plt.imshow(filtered_img_g7_std10)
         #plt.set_cmap("gray")
+        
 #MEDIAN FILTER               
-    if dig.comboBox.currentIndex() == 9:
+    if dig.comboBox.currentIndex() == 8:
         #figureSize = (12,10)
 
         noisy=salt_n_pepper(dig.image)
@@ -232,27 +231,36 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
-#
+    
+#sharpen FILTER
+    if dig.comboBox.currentIndex() == 9:
+        sharpen(dig.image)
+        
+#FT
     if dig.comboBox.currentIndex() == 10:  
         dig.valueChannel = extractValueChannel(dig.image)
         dig.FT = fftpack.fft2(dig.valueChannel)
         v1=np.log(1+np.abs(dig.FT))
         plotoutput(v1)
-        
+
+#ShiftedFT        
     if dig.comboBox.currentIndex() == 11:
         ShiftedFT = fftpack.fftshift(dig.FT)
         v2=np.log(1+np.abs(ShiftedFT))
         plotoutput(v2)
-        
+
+#Log effect on Shifted FT      
     if dig.comboBox.currentIndex() == 12:
         dig.ShiftedFT = fftpack.fftshift(dig.FT) 
         v3=np.abs(dig.ShiftedFT)
         plotoutput(v3)
-        
+
+#LPF        
     if dig.comboBox.currentIndex() == 13:
         LPF = generateFilter(dig.ShiftedFT,0.5, 0.05, "LPF") 
         plotoutput(LPF)
-        
+
+#HPF        
     if dig.comboBox.currentIndex() == 14:    
         HPF = generateFilter(dig.ShiftedFT,0.025, 0.025, "HPF")
         plotoutput(HPF) 
