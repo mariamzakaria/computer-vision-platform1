@@ -574,17 +574,6 @@ def log(img):
     image_log = signal.convolve2d( img ,  filtered_img_g7_std10 ,'same')
     plotoutput(image_log)  
 ###########################################################################    
-#lod
-############################################################################
-
-################################################################################  
-#adding noise
-###################################################################################
-def addnoise(img):
-    weight = 0.9
-    noisy = img + weight * img.std() * np.random.random(img.shape)
-    return noisy
-####################################################################################   
 #dog
 ############################################################################
 def dog(img):
@@ -593,7 +582,15 @@ def dog(img):
     filtered_img_g5_std10 = signal.convolve2d(img, gaussian_kernel(5,1.4) ,'same')
     image_dog = filtered_img_g7_std10-filtered_img_g5_std10
     plotoutput(image_dog)  
-################################################################################ 
+################################################################################ #  
+#adding noise
+###################################################################################
+def addnoise(img):
+    weight = 0.9
+    noisy = img + weight * img.std() * np.random.random(img.shape)
+    return noisy
+####################################################################################   
+
 #histogram
 #####################################################################
 def Histogram(img):
@@ -619,17 +616,18 @@ def setimagehistogram():
     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
     if fileName: # If the user gives a file
         
-        dig.his= mpimg.imread( fileName)
+        image= mpimg.imread( fileName)
+        dig.hisimage=rgb2gray(image)
         
-        yourQImage=qimage2ndarray.array2qimage(dig.his)
+        yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
         gray=QtGui.QImage(yourQImage)
         pixmap  = QtGui.QPixmap.fromImage(gray)
         pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
         dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
         dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
-        x,dig.y=Histogram(dig.his)
-        pw=pg.plot(x,dig.y)
-        
+        x,y=Histogram(dig.hisimage)
+        pg.plot(x,y,title='input histogram') 
+#equalization         
 def HistogramEqualization():
     cs = cdf(dig.y)
     # numerator & denomenator
@@ -651,7 +649,47 @@ def HistogramEqualization():
     dig.label_histograms_output.setAlignment(QtCore.Qt.AlignCenter) 
     z,w=Histogram(img_new)
     p=pg.plot(z,w)
-    
+#matching
+def hist_match(source, template):
+ 
+
+    oldshape = source.shape
+    source = source.ravel()
+    template = template.ravel()
+    svalues, index, scounts = np.unique(source, return_inverse=True,return_counts=True)#
+    tvalues, tcounts = np.unique(template, return_counts=True)
+    sourcecdf = np.cumsum(scounts).astype(np.float64)#calculate comulative ndarray and cast the ndarray type 
+    sourcecdf /= sourcecdf[-1]
+    targetcdf = np.cumsum(tcounts).astype(np.float64)
+    targetcdf /= targetcdf[-1]
+    matched = np.interp(sourcecdf, targetcdf, tvalues)
+    return matched[index].reshape(oldshape)        
+def setimagetarget():
+    fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
+    if fileName: # If the user gives a file
+        
+        image= mpimg.imread( fileName)
+        dig.targetimage=rgb2gray(image)
+        
+        yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
+        gray=QtGui.QImage(yourQImage)
+        pixmap  = QtGui.QPixmap.fromImage(gray)
+        pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
+        dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
+        dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
+        x,y=Histogram(dig.targetimage)
+        #pg.plot(x,y,title='target histogram') 
+def matching():
+        matched=hist_match(dig.hisimage,dig.targetimage)
+        yourQImage=qimage2ndarray.array2qimage(matched)
+        gray=QtGui.QImage(yourQImage)
+        pixmap  = QtGui.QPixmap.fromImage(gray)
+        pixmap = pixmap.scaled(dig.label_histograms_output.width(), dig.label_histograms_output.height(), QtCore.Qt.KeepAspectRatio)
+        dig.label_histograms_output.setPixmap( pixmap) # Set the pixmap onto the label
+        dig.label_histograms_output.setAlignment(QtCore.Qt.AlignCenter)   
+        x,y=Histogram(matched)
+        pg.plot(x,y,title='matched histogram') 
+            
 app= QtWidgets.QApplication ([])
 dig = uic.loadUi("mainwindow.ui")
 
@@ -661,6 +699,8 @@ dig.comboBox.activated[str].connect(setFilters)
 dig.pushButton_lines_load.clicked.connect(HoughLines)
 dig.pushButton_circles_load.clicked.connect(houghCircles)
 dig.pushButton_histograms_load.clicked.connect(setimagehistogram)
+dig.pushButton_histograms_load_target.clicked.connect(setimagetarget)
+dig.radioButton_2.toggled.connect(matching)
 dig.Convert.clicked.connect(convetToGray)
 dig.radioButton.toggled.connect(HistogramEqualization)
 
