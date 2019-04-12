@@ -240,7 +240,7 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
-        #sharpen FILTER
+ #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
 #
