@@ -669,10 +669,8 @@ def dog(img):
 ################################################################################ 
 #histogram
 #####################################################################
-def manHist(img):
+def Histogram(img):
    row, col = img.shape # img is a grayscale image
-   #row = round(row)
-   #col = round(col)
    y = np.zeros((256), np.uint64)
    for i in range(0,row):
       for j in range(0,col):
@@ -681,38 +679,62 @@ def manHist(img):
    plt.bar(x,y,color="gray",align="center")
    plt.show()
    return x,y
-############################################################
+
+# create our cumulative function
+def cdf(a):
+    a = iter(a)
+    b = [next(a)]
+    for i in a:
+        b.append(b[-1] + i)
+    return np.array(b)
+   
 def setimagehistogram():
     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
     if fileName: # If the user gives a file
         
-        image= mpimg.imread( fileName)
-        dig.hisimage=rgb2gray(image)
+        dig.his= mpimg.imread( fileName)
         
-        yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
+        yourQImage=qimage2ndarray.array2qimage(dig.his)
         gray=QtGui.QImage(yourQImage)
         pixmap  = QtGui.QPixmap.fromImage(gray)
         pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
         dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
         dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
+<<<<<<< HEAD
         x,y=manHist(dig.hisimage)
         pw = pg.plot(x,y)
 #def transformation():
             
+=======
+        x,dig.y=Histogram(dig.his)
+        pw=pg.plot(x,dig.y)
+        
+def HistogramEqualization():
+    cs = cdf(dig.y)
+    # numerator & denomenator
+    nj = (cs - cs.min()) * 255
+    N = cs.max() - cs.min()
+    # re-normalize the cdf on our image
+    cs = nj / N
+    # cast it back to uint8 since we can't use floating point values in images
+    cs = cs.astype('uint8')
+    img_new = cs[dig.his.flatten()]
+    # put array back into original shape since we flattened it
+    img_new = np.reshape(img_new, dig.his.shape)   
+    
+    yourQImage=qimage2ndarray.array2qimage(img_new)
+    gray=QtGui.QImage(yourQImage)
+    pixmap  = QtGui.QPixmap.fromImage(gray)
+    pixmap = pixmap.scaled(dig.label_histograms_output.width(), dig.label_histograms_output.height(), QtCore.Qt.KeepAspectRatio)
+    dig.label_histograms_output.setPixmap( pixmap) # Set the pixmap onto the label
+    dig.label_histograms_output.setAlignment(QtCore.Qt.AlignCenter) 
+    z,w=Histogram(img_new)
+    p=pg.plot(z,w)
+    
+>>>>>>> 0f910dce2dc9856909f42f9f4086ea92aff9772b
 app= QtWidgets.QApplication ([])
-#image = np.zeros((150,150))
-#image = py.imread('Donkey.bmp')
-#image[:, :] = np.eye(150)
-#accumulator, thetas, rhos = houghLine(image)
-#plt.figure('Original Image')
-#plt.imshow(image)
-#plt.set_cmap('gray')
-#plt.figure('Hough Space')
-#plt.imshow(accumulator)
-#plt.set_cmap('gray')
-#plt.show()
-
 dig = uic.loadUi("mainwindow.ui")
+
 dig.pushButton_filters_load.clicked.connect(setImage)
 dig.Load_frequency_domain.clicked.connect(setImageFT)
 dig.comboBox.activated[str].connect(setFilters)
@@ -720,7 +742,7 @@ dig.pushButton_lines_load.clicked.connect(HoughLines)
 dig.pushButton_circles_load.clicked.connect(houghCircles)
 dig.pushButton_histograms_load.clicked.connect(setimagehistogram)
 dig.Convert.clicked.connect(convetToGray)
-
+dig.radioButton.toggled.connect(HistogramEqualization)
 
 
 dig.show()
