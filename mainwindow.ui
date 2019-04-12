@@ -30,7 +30,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_filters">
         <attribute name="title">
@@ -39,7 +39,7 @@
         <widget class="QLabel" name="label_filters_input">
          <property name="geometry">
           <rect>
-           <x>180</x>
+           <x>210</x>
            <y>30</y>
            <width>331</width>
            <height>231</height>
@@ -58,7 +58,7 @@
         <widget class="QLabel" name="label_filters_output">
          <property name="geometry">
           <rect>
-           <x>520</x>
+           <x>550</x>
            <y>30</y>
            <width>331</width>
            <height>231</height>
@@ -80,21 +80,21 @@
         <widget class="QPushButton" name="pushButton_filters_load">
          <property name="geometry">
           <rect>
-           <x>20</x>
-           <y>30</y>
-           <width>121</width>
-           <height>81</height>
+           <x>40</x>
+           <y>110</y>
+           <width>91</width>
+           <height>51</height>
           </rect>
          </property>
          <property name="text">
-          <string>Load Image</string>
+          <string>Select Image</string>
          </property>
         </widget>
         <widget class="QLabel" name="label">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>140</y>
+           <x>20</x>
+           <y>190</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -106,8 +106,8 @@
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>170</y>
+           <x>20</x>
+           <y>230</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -146,7 +146,89 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox"/>
+            <widget class="QComboBox" name="comboBox">
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+             <property name="currentText">
+              <string>SELECT FILTER</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>SELECT FILTER</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PREWITT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SOBEL</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>LAPLACIAN</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>LOG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>DOG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BOX</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>GAUSSIAAN</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>MEDIAN</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SHARPENING</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ShiftedFT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>No log ShiftedFT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>LPF</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HPF</string>
+              </property>
+             </item>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -163,6 +245,19 @@
            <string>Additional Parameters</string>
           </property>
          </widget>
+        </widget>
+        <widget class="QPushButton" name="Load_frequency_domain">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>30</y>
+           <width>91</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Load image FT</string>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_lines">
@@ -191,8 +286,8 @@
         <widget class="QLabel" name="label_4">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>140</y>
+           <x>20</x>
+           <y>310</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -205,7 +300,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>170</y>
+           <y>350</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -217,8 +312,8 @@
         <widget class="QPushButton" name="pushButton_lines_load">
          <property name="geometry">
           <rect>
-           <x>20</x>
-           <y>30</y>
+           <x>10</x>
+           <y>130</y>
            <width>121</width>
            <height>81</height>
           </rect>
@@ -266,6 +361,19 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>93</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
          </property>
         </widget>
        </widget>
@@ -698,7 +806,7 @@
      <x>0</x>
      <y>0</y>
      <width>1040</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
