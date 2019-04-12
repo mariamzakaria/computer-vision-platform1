@@ -363,7 +363,7 @@
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="Convert">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -373,7 +373,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Convert To Gray</string>
          </property>
         </widget>
        </widget>
