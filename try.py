@@ -54,14 +54,14 @@ def salt_n_pepper(img):
     
 
 
-#def convetToGray():
- #     dig.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
-  #    if dig.fileName:
-   #       color_image = Image.open(dig.fileName)
-          #image = mpimg.imread(dig.fileName)
-         # bw = np.dot(color_image[...,:3], [0.299, 0.587, 0.114])
-    #      bw = color_image.convert('L')
-     #     bw.save('mero.bmp')
+def convetToGray():
+     dig.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
+     if dig.fileName:
+         color_image = Image.open(dig.fileName)
+         image = mpimg.imread(dig.fileName)
+        # bw = np.dot(color_image[...,:3], [0.299, 0.587, 0.114])
+         bw = color_image.convert('L')
+         bw.save('grayimage.bmp')
           
 def plotoutput(img):
     yourQImage=qimage2ndarray.array2qimage(img)
@@ -97,38 +97,41 @@ def setImage():
         plotinput(dig.image)
 
 # DETECT LINES
-def setImageForLines():
+def HoughLines():
   
     dig.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
     if dig.fileName:
-        image= mpimg.imread(dig.fileName)
-        dig.image=rgb2gray(image)
-        yourQImage=qimage2ndarray.array2qimage(dig.image)
-        gray=QtGui.QImage(yourQImage)
-        pixmap  = QtGui.QPixmap.fromImage(gray)
-        pixmap = pixmap.scaled(dig.label_lines_input.width(), dig.label_lines_input.height(), QtCore.Qt.KeepAspectRatio)
-        dig.label_lines_input.setPixmap( pixmap) # Set the pixmap onto the label
-        dig.label_lines_input.setAlignment(QtCore.Qt.AlignCenter)
+        dig.image= Image.open(dig.fileName)
+        dig.pixmap = QtGui.QPixmap(dig.fileName) # Setup pixmap with the provided image
+        dig.pixmap = dig.pixmap.scaled(dig.label_lines_input.width(), dig.label_lines_input.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        dig.label_lines_input.setPixmap(dig.pixmap) 
+        #######
+        #image.save(""mer.bmp)
         
-        edges = canny(dig.image, 2, 1, 25)
+       # dig.image=rgb2gray(image)
+        #yourQImage=qimage2ndarray.array2qimage(dig.image)
+      
+       
+        Shapeee = np.array(dig.image)
+        edges = canny(Shapeee, 2, 1, 25)
         lines = probabilistic_hough_line(edges, threshold=10, line_length=5,line_gap=3)
 
-        yourQImage2=qimage2ndarray.array2qimage(edges)
-        gray2=QtGui.QImage(yourQImage2)
-        pixmap2  = QtGui.QPixmap.fromImage(gray2)
-        pixmap2 = pixmap2.scaled(dig.label_lines_input_2.width(), dig.label_lines_input_2.height(), QtCore.Qt.KeepAspectRatio)
-        dig.label_lines_input_2.setPixmap( pixmap2) # Set the pixmap onto the label
-        dig.label_lines_input_2.setAlignment(QtCore.Qt.AlignCenter)
+        #yourQImage2=qimage2ndarray.array2qimage(edges)
+        #gray2=QtGui.QImage(yourQImage2)
+        #pixmap2  = QtGui.QPixmap.fromImage(gray2)
+        #pixmap2 = pixmap2.scaled(dig.label_lines_input_2.width(), dig.label_lines_input_2.height(), QtCore.Qt.KeepAspectRatio)
+        #dig.label_lines_input_2.setPixmap( pixmap2) # Set the pixmap onto the label
+        #dig.label_lines_input_2.setAlignment(QtCore.Qt.AlignCenter)
         
        
-        x = edges * 0
-        yourQImage3=qimage2ndarray.array2qimage(x)
+        #x = edges * 0
+       # yourQImage3=qimage2ndarray.array2qimage(x)
      
-        gray3=QtGui.QImage(yourQImage3)
-        pixmap3  = QtGui.QPixmap.fromImage(gray3)
-        pixmap3 = pixmap3.scaled(dig.label_circles_hough.width(), dig.label_circles_hough.height(), QtCore.Qt.KeepAspectRatio)
-        dig.label_circles_hough.setPixmap( pixmap2) # Set the pixmap onto the label
-        dig.label_circles_hough.setAlignment(QtCore.Qt.AlignCenter)
+        #gray3=QtGui.QImage(yourQImage3)
+        #pixmap3  = QtGui.QPixmap.fromImage(gray3)
+        #pixmap3 = pixmap3.scaled(dig.label_circles_hough.width(), dig.label_circles_hough.height(), QtCore.Qt.KeepAspectRatio)
+        #dig.label_circles_hough.setPixmap( pixmap2) # Set the pixmap onto the label
+        #dig.label_circles_hough.setAlignment(QtCore.Qt.AlignCenter)
         
         #for line in lines:
          #   p0, p1 = line
@@ -140,6 +143,8 @@ def setImageForLines():
 
         ax[0].imshow(dig.image, cmap=cm.gray)
         ax[0].set_title('Input image')
+        #tt = Image.open(dig.image)
+        #tt.save("mero.bmp")
 
         ax[1].imshow(edges, cmap=cm.gray)
         ax[1].set_title('Canny edges')
@@ -149,19 +154,24 @@ def setImageForLines():
         
 
         ax[2].imshow(x)
+        output_image1 = Image.new("RGB", dig.image.size)
+        draw = ImageDraw.Draw(output_image1)
         for line in lines:
             p0, p1 = line
+            draw.point((p0,p1),(255,255,255))
+           # draw.line((p0[0], p1[0]), (p0[1], p1[1]),(255,0,0,0))
             ax[2].plot((p0[0], p1[0]), (p0[1], p1[1]))
-            ax[2].set_xlim((0, dig.image.shape[1]))
-            ax[2].set_ylim((dig.image.shape[0], 0))
-            ax[2].set_title('Probabilistic Hough')
-
-        #for a in ax:
-         #   a.set_axis_off()
-
-        #plt.tight_layout()
-       # plt.show()
-        #fig.savefig('plot.png')
+        #ax[2].set_xlim((0, Shapeee.shape[1]))
+        #ax[2].set_ylim((Shapeee.shape[0], 0))
+        ax[2].set_title('Probabilistic Hough')
+        #x.imsave("Hough.bmp",imgf)
+        
+       # scipy.misc.imsave('outfilerrr.bmp', edges * 0)
+        output_image1.save("cannyline.bmp")
+        dig.pixma = QtGui.QPixmap("cannyline.bmp") # Setup pixmap with the provided image
+        dig.pixma = dig.pixma.scaled(dig.label_lines_input_2.width(), dig.label_lines_input_2.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        dig.label_lines_input_2.setPixmap(dig.pixma)
+        dig.label_lines_input_2.setAlignment(QtCore.Qt.AlignCenter) 
 
         
         
@@ -192,11 +202,9 @@ def setFilters(text):
         plotinput(noisy)
         dog(noisy)
 
-#sharpen FILTER
-    if dig.comboBox.currentIndex() == 6:
-        sharpen(dig.image)
+
 #BOX FILTER        
-    if dig.comboBox.currentIndex() == 7:
+    if dig.comboBox.currentIndex() == 6:
         #figureSize = (12,10)
         noisy=salt_n_pepper(dig.image)
         plotinput(salt_n_pepper(dig.image))
@@ -208,7 +216,7 @@ def setFilters(text):
        # plt.set_cmap("gray")
     
 #GAUSSIAN FILTER 
-    if dig.comboBox.currentIndex() == 8:
+    if dig.comboBox.currentIndex() == 7:
        #dig.label_3.setText(text)
         #figureSize = (12,10)
        
@@ -221,7 +229,7 @@ def setFilters(text):
         #plt.imshow(filtered_img_g7_std10)
         #plt.set_cmap("gray")
 #MEDIAN FILTER               
-    if dig.comboBox.currentIndex() == 9:
+    if dig.comboBox.currentIndex() == 8:
         #figureSize = (12,10)
 
         noisy=salt_n_pepper(dig.image)
@@ -232,6 +240,9 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
+        #sharpen FILTER
+    if dig.comboBox.currentIndex() == 9:
+        sharpen(dig.image)
 #
     if dig.comboBox.currentIndex() == 10:  
         dig.valueChannel = extractValueChannel(dig.image)
@@ -588,8 +599,10 @@ dig = uic.loadUi("mainwindow.ui")
 dig.pushButton_filters_load.clicked.connect(setImage)
 dig.Load_frequency_domain.clicked.connect(setImageFT)
 dig.comboBox.activated[str].connect(setFilters)
-dig.pushButton_lines_load.clicked.connect(setImageForLines)
+dig.pushButton_lines_load.clicked.connect(HoughLines)
 dig.pushButton_circles_load.clicked.connect(houghCircles)
+dig.Convert.clicked.connect(convetToGray)
+
 
 
 dig.show()
