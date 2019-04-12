@@ -24,8 +24,6 @@ from matplotlib import cm
 import pyqtgraph as pg
 
 
-
-
 #CONVER TO GRAYSCALE
 def rgb2gray(rgb_image):
     return 0.299*rgb_image[:,:,0]+0.587*rgb_image[:,:,1]+0.114*rgb_image[:,:,2]
@@ -40,9 +38,6 @@ def gaussian_kernel( kernlen , std ):
     gkern1d = signal.gaussian(kernlen, std=std).reshape(kernlen, 1)
     gkern2d = np.outer(gkern1d, gkern1d)
     return gkern2d
-#plt.imshow(gaussian_kernel(21,5), interpolation='none')
-    #filtered_img_g7_std10 = signal.convolve2d(noisy, gaussian_kernel(7,1.0) ,'same')
-    #plt(filtered_img_g7_std10)
 
 #Median Filter
 def salt_n_pepper(img):
@@ -105,46 +100,17 @@ def HoughLines():
         dig.pixmap = QtGui.QPixmap(dig.fileName) # Setup pixmap with the provided image
         dig.pixmap = dig.pixmap.scaled(dig.label_lines_input.width(), dig.label_lines_input.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
         dig.label_lines_input.setPixmap(dig.pixmap) 
-        #######
-        #image.save(""mer.bmp)
         
-       # dig.image=rgb2gray(image)
-        #yourQImage=qimage2ndarray.array2qimage(dig.image)
-      
-       
         Shapeee = np.array(dig.image)
         edges = canny(Shapeee, 2, 1, 25)
         lines = probabilistic_hough_line(edges, threshold=10, line_length=5,line_gap=3)
 
-        #yourQImage2=qimage2ndarray.array2qimage(edges)
-        #gray2=QtGui.QImage(yourQImage2)
-        #pixmap2  = QtGui.QPixmap.fromImage(gray2)
-        #pixmap2 = pixmap2.scaled(dig.label_lines_input_2.width(), dig.label_lines_input_2.height(), QtCore.Qt.KeepAspectRatio)
-        #dig.label_lines_input_2.setPixmap( pixmap2) # Set the pixmap onto the label
-        #dig.label_lines_input_2.setAlignment(QtCore.Qt.AlignCenter)
-        
-       
-        #x = edges * 0
-       # yourQImage3=qimage2ndarray.array2qimage(x)
-     
-        #gray3=QtGui.QImage(yourQImage3)
-        #pixmap3  = QtGui.QPixmap.fromImage(gray3)
-        #pixmap3 = pixmap3.scaled(dig.label_circles_hough.width(), dig.label_circles_hough.height(), QtCore.Qt.KeepAspectRatio)
-        #dig.label_circles_hough.setPixmap( pixmap2) # Set the pixmap onto the label
-        #dig.label_circles_hough.setAlignment(QtCore.Qt.AlignCenter)
-        
-        #for line in lines:
-         #   p0, p1 = line
-        
-        # Generating figure 2
-        #fig = plt.figure()
         fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharex=True, sharey=True)
         ax = axes.ravel()
 
         ax[0].imshow(dig.image, cmap=cm.gray)
         ax[0].set_title('Input image')
-        #tt = Image.open(dig.image)
-        #tt.save("mero.bmp")
+
 
         ax[1].imshow(edges, cmap=cm.gray)
         ax[1].set_title('Canny edges')
@@ -159,10 +125,9 @@ def HoughLines():
         for line in lines:
             p0, p1 = line
             draw.point((p0,p1),(255,255,255))
-           # draw.line((p0[0], p1[0]), (p0[1], p1[1]),(255,0,0,0))
+
             ax[2].plot((p0[0], p1[0]), (p0[1], p1[1]))
-        #ax[2].set_xlim((0, Shapeee.shape[1]))
-        #ax[2].set_ylim((Shapeee.shape[0], 0))
+
         ax[2].set_title('Probabilistic Hough')
         #x.imsave("Hough.bmp",imgf)
         
@@ -173,10 +138,7 @@ def HoughLines():
         dig.label_lines_input_2.setPixmap(dig.pixma)
         dig.label_lines_input_2.setAlignment(QtCore.Qt.AlignCenter) 
 
-        
-        
- 
-        
+      
 
 # Apply filters on images
 def setFilters(text):
@@ -205,42 +167,31 @@ def setFilters(text):
 
 #BOX FILTER        
     if dig.comboBox.currentIndex() == 6:
-        #figureSize = (12,10)
-        noisy=salt_n_pepper(dig.image)
-        plotinput(salt_n_pepper(dig.image))
-        #noisy=qimage2ndarray.array2qimage(noisy)
-        filtered_img_box9 = signal.convolve2d(noisy, box_filter(9) ,'same')
-        plotoutput(filtered_img_box9)
-        #plt.figure("1",figsize=figureSize)
-        #plt.imshow(filtered_img_box9)
-       # plt.set_cmap("gray")
-    
-#GAUSSIAN FILTER 
-    if dig.comboBox.currentIndex() == 7:
-       #dig.label_3.setText(text)
-        #figureSize = (12,10)
-       
-        noisy=salt_n_pepper(dig.image)
-        plotinput(salt_n_pepper(dig.image))
-        #noisy=qimage2ndarray.array2qimage(noisy)
-        filtered_img_g7_std10 = signal.convolve2d(noisy, gaussian_kernel(7,.3) ,'same')
-        plotoutput(filtered_img_g7_std10 )
-        #plt.figure("2",figsize=figureSize)
-        #plt.imshow(filtered_img_g7_std10)
-        #plt.set_cmap("gray")
-        
-#MEDIAN FILTER               
-    if dig.comboBox.currentIndex() == 8:
-        #figureSize = (12,10)
 
         noisy=salt_n_pepper(dig.image)
         plotinput(salt_n_pepper(dig.image))
-        #noisy=qimage2ndarray.array2qimage(noisy)
+ 
+        filtered_img_box9 = signal.convolve2d(noisy, box_filter(9) ,'same')
+        plotoutput(filtered_img_box9)
+
+#GAUSSIAN FILTER 
+    if dig.comboBox.currentIndex() == 7:
+
+        noisy=salt_n_pepper(dig.image)
+        plotinput(salt_n_pepper(dig.image))
+
+        filtered_img_g7_std10 = signal.convolve2d(noisy, gaussian_kernel(7,.3) ,'same')
+        plotoutput(filtered_img_g7_std10 )
+
+#MEDIAN FILTER               
+    if dig.comboBox.currentIndex() == 8:
+  
+
+        noisy=salt_n_pepper(dig.image)
+        plotinput(salt_n_pepper(dig.image))
+
         med_image3 = ndimage.median_filter(noisy,(3,3))
         plotoutput(med_image3 )
-        #plt.figure("3",figsize=figureSize)
-        #plt.imshow(med_image3)
-        #plt.set_cmap("gray")
 
  #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
@@ -290,12 +241,6 @@ def houghCircles():
         dig.pixmap = dig.pixmap.scaled(dig.label_circles_input.width(), dig.label_circles_input.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
         dig.label_circles_input.setPixmap(dig.pixmap) # Set the pixmap onto the label#dig.label_filters_input.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
            
-        #yourQImage=qimage2ndarray.array2qimage(dig.img)
-        #gray=QtGui.QImage(yourQImage)
-        #pixmap  = QtGui.QPixmap.fromImage(gray)
-        #pixmap = pixmap.scaled(dig.label_circles_input.width(), dig.label_circles_input.height(), QtCore.Qt.KeepAspectRatio)
-        #dig.label_circles_input.setPixmap( pixmap) # Set the pixmap onto the label
-        #dig.label_circles_input.setAlignment(QtCore.Qt.AlignCenter)
         
         output_image1 = Image.new("RGB", dig.img.size)
         draw = ImageDraw.Draw(output_image1)
@@ -307,12 +252,6 @@ def houghCircles():
         dig.pixma = dig.pixma.scaled(dig.label_circles_hough.width(), dig.label_circles_hough.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
         dig.label_circles_hough.setPixmap(dig.pixma) # Set the pixmap onto the label#dig.label_filters_input.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
         
-        #yourQImage=qimage2ndarray.array2qimage(output_image1)
-        #gray=QtGui.QImage(yourQImage)
-        #pixma  = QtGui.QPixmap.fromImage(yourQImage)
-        #pixma = pixma.scaled(dig.label_circles_hough.width(), dig.label_circles_hough.height(), QtCore.Qt.KeepAspectRatio)
-        #dig.label_circles_hough.setPixmap( pixma) # Set the pixmap onto the label
-        #dig.label_circles_hough.setAlignment(QtCore.Qt.AlignCenter)
         
         circle()
         # Output image with circles:
@@ -326,14 +265,6 @@ def houghCircles():
         dig.pixm = dig.pixm.scaled(dig.label_circles_output.width(), dig.label_circles_output.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
         dig.label_circles_output.setPixmap(dig.pixm) # Set the pixmap onto the label#dig.label_filters_input.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
  ##############################
- #MATCHING HISTOGRAM
-# def cumulative_histogram(hist):
- #   cum_hist = hist.copy()
-    
-  #  for i in np.arange(1, 256):
-   #     cum_hist[i] = cum_hist[i-1] + cum_hist[i]
-        
-    #return cum_hist
 
 
 def histogram(img):
@@ -350,56 +281,6 @@ def histogram(img):
     return hist
 
 
-#def matchingHisto():
-        #dig.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
-        #if dig.fileName:
-         #   dig.image= Image.open(dig.fileName)
-        #dig.pixmap = QtGui.QPixmap(dig.fileName) # Setup pixmap with the provided image
-        #dig.pixmap = dig.pixmap.scaled(dig.label_lines_input.width(), dig.label_lines_input.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
-        #dig.label_lines_input.setPixmap(dig.pixmap) 
-        
-        #img = cv2.imread('images/cat.jpg', cv2.IMREAD_GRAYSCALE)
-        #img_ref = cv2.imread('images/img1.jpg', cv2.IMREAD_GRAYSCALE)
-
-        #height = img.shape[0]
-        #width = img.shape[1]
-        #pixels = width * height
-
-        #height_ref = img_ref.shape[0]
-        #width_ref = img_ref.shape[1]
-        #pixels_ref = width_ref * height_ref
-
-        #hist = h.histogram(img)
-       # hist_ref = h.histogram(img_ref)
-
-        #cum_hist = ch.cumulative_histogram(hist)
-        #cum_hist_ref = ch.cumulative_histogram(hist_ref)
-
-        #prob_cum_hist = cum_hist / pixels
-
-        #prob_cum_hist_ref = cum_hist_ref / pixels_ref
-
-       # K = 256
-       # new_values = np.zeros((K))
-
-       # for a in np.arange(K):
-            #j = K - 1
-           # while True:
-          #      new_values[a] = j
-         #       j = j - 1
-        #        if j < 0 or prob_cum_hist[a] > prob_cum_hist_ref[j]:
-       #             break
-
-      #  for i in np.arange(height):
-     #       for j in np.arange(width):
-    #            a = img.item(i,j)
-   #             b = new_values[a]
-  #              img.itemset((i,j), b)
-
- #       cv2.imwrite('images/hist_matched.jpg', img)
-
-#cv2.imshow('image',img)
-    
 def extractValueChannel(image):
     try:
         # Check if it has three channels or not 
@@ -585,10 +466,6 @@ def houghLine(image):
     return accumulator, thetas, rs
 
 
-           
-
-
-
 #prewitt and sobel operators 
 ########################################################################################
 prewitt_h = np.array([[ -1 , 0 , 1 ] ,
@@ -615,7 +492,7 @@ def prewit(img):
     image_prewit_v = signal.convolve2d( img , prewitt_v ,'same')
     gradient = np.sqrt(image_prewit_h * image_prewit_h + image_prewit_v * image_prewit_v)
     plotoutput(gradient)
-###########################################################################################        
+       
 #sharpen filter
 #################################################################################################3
 def sharpen(img):
@@ -624,8 +501,6 @@ def sharpen(img):
     im_sharpened =signal.convolve2d(img, sharpen_kernel, mode='same')
     plotoutput(im_sharpened)
 
-
-###########################################################################################
 #laplacian filter
 #################################################################################
 def laplacian(img):
@@ -635,7 +510,7 @@ def laplacian(img):
     
     image_laplacian = signal.convolve2d( img , lablacian_kernal ,'same')
     plotoutput(image_laplacian)    
-############################################################################################    
+    
 #log
 #############################################################################
 def log(img):
@@ -646,7 +521,7 @@ def log(img):
     filtered_img_g7_std10 = signal.convolve2d(lablacian_kernal, gaussian_kernel(7,.3) ,'same')
     image_log = signal.convolve2d( img ,  filtered_img_g7_std10 ,'same')
     plotoutput(image_log)  
-###########################################################################    
+   
 #dog
 ############################################################################
 def dog(img):
@@ -655,14 +530,14 @@ def dog(img):
     filtered_img_g5_std10 = signal.convolve2d(img, gaussian_kernel(5,1.4) ,'same')
     image_dog = filtered_img_g7_std10-filtered_img_g5_std10
     plotoutput(image_dog)  
-################################################################################ #  
+ 
 #adding noise
 ###################################################################################
 def addnoise(img):
     weight = 0.9
     noisy = img + weight * img.std() * np.random.random(img.shape)
     return noisy
-####################################################################################   
+ 
 
 #histogram
 #####################################################################
@@ -689,30 +564,19 @@ def setimagehistogram():
     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
     if fileName: # If the user gives a file
         
-        image= mpimg.imread( fileName)
-        dig.hisimage=rgb2gray(image)
-        
+        dig.hisimage= mpimg.imread( fileName)
+       
         yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
         gray=QtGui.QImage(yourQImage)
         pixmap  = QtGui.QPixmap.fromImage(gray)
         pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
         dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
         dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
-<<<<<<< HEAD
+
         x,y=Histogram(dig.hisimage)
-        pg.plot(x,y,title='input histogram') 
-#equalization         
-=======
-<<<<<<< HEAD
-        x,y=manHist(dig.hisimage)
-        pw = pg.plot(x,y)
-#def transformation():
-            
-=======
-        x,dig.y=Histogram(dig.his)
-        pw=pg.plot(x,dig.y)
-        
->>>>>>> d4b84d39387c1b495cd8a797232af2a658143de4
+        pw =pg.plot(x,dig.y) 
+
+
 def HistogramEqualization():
     cs = cdf(dig.y)
     # numerator & denomenator
@@ -732,9 +596,10 @@ def HistogramEqualization():
     pixmap = pixmap.scaled(dig.label_histograms_output.width(), dig.label_histograms_output.height(), QtCore.Qt.KeepAspectRatio)
     dig.label_histograms_output.setPixmap( pixmap) # Set the pixmap onto the label
     dig.label_histograms_output.setAlignment(QtCore.Qt.AlignCenter) 
+    
     z,w=Histogram(img_new)
     p=pg.plot(z,w)
-<<<<<<< HEAD
+
 #matching
 def hist_match(source, template):
  
@@ -776,10 +641,9 @@ def matching():
         x,y=Histogram(matched)
         pg.plot(x,y,title='matched histogram') 
             
-=======
+
     
->>>>>>> 0f910dce2dc9856909f42f9f4086ea92aff9772b
->>>>>>> d4b84d39387c1b495cd8a797232af2a658143de4
+
 app= QtWidgets.QApplication ([])
 dig = uic.loadUi("mainwindow.ui")
 
