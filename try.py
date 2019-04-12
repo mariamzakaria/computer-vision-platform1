@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw
 from math import sqrt, pi, cos, sin, atan2
 from collections import defaultdict
 from matplotlib import cm
-
+import pyqtgraph as pg
 
 
 
@@ -241,19 +241,19 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
-<<<<<<< HEAD
+#<<<<<<< HEAD
  #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
 #
-=======
+#=======
     
 #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
         
 #FT
->>>>>>> 495a129f093b37536d44486320ed2d1b196f7e10
+#>>>>>>> 495a129f093b37536d44486320ed2d1b196f7e10
     if dig.comboBox.currentIndex() == 10:  
         dig.valueChannel = extractValueChannel(dig.image)
         dig.FT = fftpack.fft2(dig.valueChannel)
@@ -594,6 +594,36 @@ def dog(img):
     image_dog = filtered_img_g7_std10-filtered_img_g5_std10
     plotoutput(image_dog)  
 ################################################################################ 
+#histogram
+#####################################################################
+def manHist(img):
+   row, col = img.shape # img is a grayscale image
+   #row = round(row)
+   #col = round(col)
+   y = np.zeros((256), np.uint64)
+   for i in range(0,row):
+      for j in range(0,col):
+         y[int(img[i,j])] += 1
+   x = np.arange(0,256)
+   plt.bar(x,y,color="gray",align="center")
+   plt.show()
+   return x,y
+############################################################
+def setimagehistogram():
+    fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
+    if fileName: # If the user gives a file
+        
+        image= mpimg.imread( fileName)
+        dig.hisimage=rgb2gray(image)
+        
+        yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
+        gray=QtGui.QImage(yourQImage)
+        pixmap  = QtGui.QPixmap.fromImage(gray)
+        pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
+        dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
+        dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
+        x,y=manHist(dig.image)
+        pw = pg.plot(x,y)
 #def transformation():
             
 app= QtWidgets.QApplication ([])
@@ -615,6 +645,7 @@ dig.Load_frequency_domain.clicked.connect(setImageFT)
 dig.comboBox.activated[str].connect(setFilters)
 dig.pushButton_lines_load.clicked.connect(HoughLines)
 dig.pushButton_circles_load.clicked.connect(houghCircles)
+dig.pushButton_histograms_load.clicked.connect(setimagehistogram)
 dig.Convert.clicked.connect(convetToGray)
 
 
