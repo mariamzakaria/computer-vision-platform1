@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw
 from math import sqrt, pi, cos, sin, atan2
 from collections import defaultdict
 from matplotlib import cm
-
+import pyqtgraph as pg
 
 
 
@@ -241,16 +241,18 @@ def setFilters(text):
         #plt.figure("3",figsize=figureSize)
         #plt.imshow(med_image3)
         #plt.set_cmap("gray")
+
  #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
-#
+
     
 #sharpen FILTER
     if dig.comboBox.currentIndex() == 9:
         sharpen(dig.image)
         
 #FT
+
     if dig.comboBox.currentIndex() == 10:  
         dig.valueChannel = extractValueChannel(dig.image)
         dig.FT = fftpack.fft2(dig.valueChannel)
@@ -323,7 +325,81 @@ def houghCircles():
         dig.pixm = QtGui.QPixmap("result.png") # Setup pixmap with the provided image
         dig.pixm = dig.pixm.scaled(dig.label_circles_output.width(), dig.label_circles_output.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
         dig.label_circles_output.setPixmap(dig.pixm) # Set the pixmap onto the label#dig.label_filters_input.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
+ ##############################
+ #MATCHING HISTOGRAM
+# def cumulative_histogram(hist):
+ #   cum_hist = hist.copy()
+    
+  #  for i in np.arange(1, 256):
+   #     cum_hist[i] = cum_hist[i-1] + cum_hist[i]
         
+    #return cum_hist
+
+
+def histogram(img):
+    height = img.shape[0]
+    width = img.shape[1]
+    
+    hist = np.zeros((256))
+
+    for i in np.arange(height):
+        for j in np.arange(width):
+            a = img.item(i,j)
+            hist[a] += 1
+            
+    return hist
+
+
+#def matchingHisto():
+        #dig.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
+        #if dig.fileName:
+         #   dig.image= Image.open(dig.fileName)
+        #dig.pixmap = QtGui.QPixmap(dig.fileName) # Setup pixmap with the provided image
+        #dig.pixmap = dig.pixmap.scaled(dig.label_lines_input.width(), dig.label_lines_input.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        #dig.label_lines_input.setPixmap(dig.pixmap) 
+        
+        #img = cv2.imread('images/cat.jpg', cv2.IMREAD_GRAYSCALE)
+        #img_ref = cv2.imread('images/img1.jpg', cv2.IMREAD_GRAYSCALE)
+
+        #height = img.shape[0]
+        #width = img.shape[1]
+        #pixels = width * height
+
+        #height_ref = img_ref.shape[0]
+        #width_ref = img_ref.shape[1]
+        #pixels_ref = width_ref * height_ref
+
+        #hist = h.histogram(img)
+       # hist_ref = h.histogram(img_ref)
+
+        #cum_hist = ch.cumulative_histogram(hist)
+        #cum_hist_ref = ch.cumulative_histogram(hist_ref)
+
+        #prob_cum_hist = cum_hist / pixels
+
+        #prob_cum_hist_ref = cum_hist_ref / pixels_ref
+
+       # K = 256
+       # new_values = np.zeros((K))
+
+       # for a in np.arange(K):
+            #j = K - 1
+           # while True:
+          #      new_values[a] = j
+         #       j = j - 1
+        #        if j < 0 or prob_cum_hist[a] > prob_cum_hist_ref[j]:
+       #             break
+
+      #  for i in np.arange(height):
+     #       for j in np.arange(width):
+    #            a = img.item(i,j)
+   #             b = new_values[a]
+  #              img.itemset((i,j), b)
+
+ #       cv2.imwrite('images/hist_matched.jpg', img)
+
+#cv2.imshow('image',img)
+    
 def extractValueChannel(image):
     try:
         # Check if it has three channels or not 
@@ -591,6 +667,36 @@ def dog(img):
     image_dog = filtered_img_g7_std10-filtered_img_g5_std10
     plotoutput(image_dog)  
 ################################################################################ 
+#histogram
+#####################################################################
+def manHist(img):
+   row, col = img.shape # img is a grayscale image
+   #row = round(row)
+   #col = round(col)
+   y = np.zeros((256), np.uint64)
+   for i in range(0,row):
+      for j in range(0,col):
+         y[int(img[i,j])] += 1
+   x = np.arange(0,256)
+   plt.bar(x,y,color="gray",align="center")
+   plt.show()
+   return x,y
+############################################################
+def setimagehistogram():
+    fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *.jpeg *.bmp);;All Files (*)") # Ask for file
+    if fileName: # If the user gives a file
+        
+        image= mpimg.imread( fileName)
+        dig.hisimage=rgb2gray(image)
+        
+        yourQImage=qimage2ndarray.array2qimage(dig.hisimage)
+        gray=QtGui.QImage(yourQImage)
+        pixmap  = QtGui.QPixmap.fromImage(gray)
+        pixmap = pixmap.scaled(dig.label_histograms_input.width(), dig.label_histograms_input.height(), QtCore.Qt.KeepAspectRatio)
+        dig.label_histograms_input.setPixmap( pixmap) # Set the pixmap onto the label
+        dig.label_histograms_input.setAlignment(QtCore.Qt.AlignCenter)   
+        x,y=manHist(dig.hisimage)
+        pw = pg.plot(x,y)
 #def transformation():
             
 app= QtWidgets.QApplication ([])
@@ -612,6 +718,7 @@ dig.Load_frequency_domain.clicked.connect(setImageFT)
 dig.comboBox.activated[str].connect(setFilters)
 dig.pushButton_lines_load.clicked.connect(HoughLines)
 dig.pushButton_circles_load.clicked.connect(houghCircles)
+dig.pushButton_histograms_load.clicked.connect(setimagehistogram)
 dig.Convert.clicked.connect(convetToGray)
 
 
