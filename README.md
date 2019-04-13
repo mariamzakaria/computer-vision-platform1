@@ -91,26 +91,26 @@ https://stackoverflow.com/questions/47377230/error-with-image-sharpening-in-pyth
 
 ## 2. Then we apply FT but there is a problem in showing it on our GUI 
 
-<img src = "/images/FT.png" width = "50%">
+<img src = "/images/FT.PNG" width = "50%">
 
 ## 3. Then making shifted FT but there is a problem in showing it on our GUI
 
 
-<img src = "/images/ShiftedFT.png" width = "50%">
+<img src = "/images/ShiftedFT.PNG" width = "50%">
 
 ## 4. we tried Shifted FT without log scale 
 
-<img src = "/images/Without log.png" width = "50%">
+<img src = "/images/Without log.PNG" width = "50%">
 
 ## 5. we generate filres (low pass filter & high pass filter )  by using arrays of zeros and ones then apply Filter in Frequency Domain , we multipy the ideal LPF by the fourier spectrum of the image
 
 ### I. LPF REsult , it didn't work in gui but work outside it 
 
-<img src = "/images/LPF.png" width = "50%">
+<img src = "/images/LPF.PNG" width = "50%">
 
 ### II.HPS Result, it didn't work in gui but work outside it
 
-<img src = "/images/HPF.png" width = "50%">
+<img src = "/images/HPF.PNG" width = "50%">
 
 # Hough Transform
 
@@ -129,7 +129,7 @@ https://scikit-image.org/docs/dev/auto_examples/edges/plot_line_hough_transform.
 # The result 
 
 
-<img src = "/images/Lines.png" width = "50%">
+<img src = "/images/Lines.PNG" width = "50%">
 
 ## Hough circles 
 
@@ -147,14 +147,14 @@ https://scikit-image.org/docs/dev/auto_examples/edges/plot_line_hough_transform.
 
 
 
-<img src = "/images/houghcircle.png" width = "50%">
+<img src = "/images/houghcircle.PNG" width = "50%">
 
 ## Histogram 
 
 ## we make an empty array and we count pixel value by making for loop
 ## then we plot it with  x (0:256)
 
-<img src = "/images/inutHistogram.png" width = "50%">
+<img src = "/images/inutHistogram.PNG" width = "50%">
 
 # Histogram Equalization
 
@@ -162,9 +162,9 @@ https://scikit-image.org/docs/dev/auto_examples/edges/plot_line_hough_transform.
 ## we use a this link to make Equalization
 https://hackernoon.com/histogram-equalization-in-python-from-scratch-ebb9c8aa3f23
 
-<img src = "/images/outputHistogramEqualization.png" width = "50%">
+<img src = "/images/outputHistogramEqualization.PNG" width = "50%">
 
-<img src = "/images/HistogramEqualizatio.png" width = "50%">
+<img src = "/images/HistogramEqualizatio.PNG" width = "50%">
 
 # Matching histogram 
 
