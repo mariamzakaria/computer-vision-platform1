@@ -1,4 +1,4 @@
-
+﻿
 # Spatial domain filtering 
 # We use this link when applying Spatial filters
 https://github.com/machinelearninggod/Image-Processing-Algorithms
@@ -17,7 +17,7 @@ https://github.com/machinelearninggod/Image-Processing-Algorithms
 
 
 
-<img src = "/images/noise.png" width = "50%">
+<img src = "/images/noise.PNG" width = "50%">
 
 # Apply filters on the noisy image
 
@@ -26,7 +26,7 @@ https://github.com/machinelearninggod/Image-Processing-Algorithms
 # The result 
 
 
-<img src = "/images/BoxFilter.png" width = "50%">
+<img src = "/images/BoxFilter.PNG" width = "50%">
 
 # 2.Gaussian Filter 
 # for σ = 0.3
@@ -34,19 +34,19 @@ https://github.com/machinelearninggod/Image-Processing-Algorithms
 
 
 
-<img src = "/images/gussianFilter.png" width = "50%">
+<img src = "/images/gussianFilter.PNG" width = "50%">
 
 # 3.Median (Non-linear) filter
 # we use median filter 3x3
 # The result
 
 
-<img src = "/images/medianFilter.png" width = "50%">
+<img src = "/images/medianFilter.PNG" width = "50%">
 
 # We have some problems in plotting in the mainwindow.ui so we plot using figures
 
 
-<img src = "/images/LinesFigures.png" width = "50%">
+<img src = "/images/LinesFigures.PNG" width = "50%">
 
 # spatial domain filtering:
 
