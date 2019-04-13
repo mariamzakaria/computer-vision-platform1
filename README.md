@@ -43,7 +43,7 @@
 
 <img src = "/images/medianFilter.PNG" width = "50%">
 
-# We have some problems in plotting in the mainwindow.ui so we plot using figures
+# We have some problems in plotting in the mainwindow.ui so we plot figures outside gui
 
 
 <img src = "/images/LinesFigures.PNG" width = "50%">
@@ -89,7 +89,7 @@ https://stackoverflow.com/questions/47377230/error-with-image-sharpening-in-pyth
 
 <img src = "/images/extractedValueChannel.png" width = "50%">
 
-## 2. Then we apply FT but there is a problem in showing it on our GUI 
+## 2. Then we apply FT but there is a problem in showing it on our GUI, we try to save it outside then implement it but we failed
 
 <img src = "/images/FT.PNG" width = "50%">
 
@@ -98,7 +98,7 @@ https://stackoverflow.com/questions/47377230/error-with-image-sharpening-in-pyth
 
 <img src = "/images/ShiftedFT.PNG" width = "50%">
 
-## 4. we tried Shifted FT without log scale 
+## 4. we tried Shifted FT without log scale but there is a problem in showing it on our GUI
 
 <img src = "/images/Without log.PNG" width = "50%">
 
@@ -139,12 +139,13 @@ https://scikit-image.org/docs/dev/auto_examples/edges/plot_line_hough_transform.
 2. https://github.com/PavanGJ/Circle-Hough-Transform?fbclid=IwAR0dhunhK6MLftiHfHJVEWTTOIL0MOr4NhWq2pBCnm5s2l0PnMCXNsAbBIc
 
 ## We make canny adge detector for the image 
-## after lots of trying we choose specific parameters for circles and detection
+## after lots of trying we choose specific parameters for circles and detection but the detection wasn't good enough
+
     rmin = 20
     rmax = 25
     steps = 50
     threshold = 0.4
-
+## there are problems in plotting in gui directly so we make save for image then implement it in gui
 
 
 <img src = "/images/houghcircle.PNG" width = "50%">
