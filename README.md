@@ -1,14 +1,14 @@
 ﻿
 # Spatial domain filtering 
 # We use this link when applying Spatial filters
-https://github.com/machinelearninggod/Image-Processing-Algorithms
+ https://github.com/machinelearninggod/Image-Processing-Algorithms
 
 ## Noise reduction filters
 
 
 
 # Load the image 
-#we browse the image then convert it to grayscale
+# we browse the image then convert it to grayscale
 
 
 <img src = "/images/load.png" width = "50%">
