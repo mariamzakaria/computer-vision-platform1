@@ -87,7 +87,7 @@ https://stackoverflow.com/questions/47377230/error-with-image-sharpening-in-pyth
 
 ## 1. first we extract value channel from the loaded image 
 
-<img src = "/images/extractedValueChannel.png" width = "50%">
+<img src = "/images/extractedValueChannel.PNG" width = "50%">
 
 ## 2. Then we apply FT but there is a problem in showing it on our GUI, we try to save it outside then implement it but we failed
 
