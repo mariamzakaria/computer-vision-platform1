@@ -8,7 +8,7 @@ https://github.com/machinelearninggod/Image-Processing-Algorithms
 
 
 # Load the image 
-#           we browse the image then convert it to grayscale
+#we browse the image then convert it to grayscale
 
 
 <img src = "/images/load.png" width = "50%">
