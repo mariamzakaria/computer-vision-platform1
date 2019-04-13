@@ -164,7 +164,7 @@ https://hackernoon.com/histogram-equalization-in-python-from-scratch-ebb9c8aa3f2
 
 <img src = "/images/outputHistogramEqualization.PNG" width = "50%">
 
-<img src = "/images/HistogramEqualizatio.PNG" width = "50%">
+<img src = "/images/HistogramEqualization.PNG" width = "50%">
 
 # Matching histogram 
 
